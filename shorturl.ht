@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Shortener</title>
+  <style>
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>URL Shortener</h1>
+
+  <label for="originalUrl">Enter URL:</label>
+  <input type="url" id="originalUrl" required>
+  <button onclick="shortenUrl()">Shorten</button>
+
+  <p>Shortened URL:</p>
+  <p id="shortenedUrl"></p>
+
+  <script>
+    function shortenUrl() {
+      const originalUrl = document.getElementById('originalUrl').value;
+
+      if (!originalUrl) {
+        alert('URL is required');
+        return;
+      }
+
+      // Generate a simple hash as a "shortened" URL
+      const shortCode = originalUrl.hashCode().toString(36);
+
+      // Store the mapping in localStorage
+      localStorage.setItem(shortCode, originalUrl);
+
+      const shortenedUrl = window.location.origin + '/' + shortCode;
+
+      document.getElementById('shortenedUrl').textContent = shortenedUrl;
+    }
+
+    // String hash function for demonstration purposes
+    String.prototype.hashCode = function() {
+      let hash = 0, i, chr;
+      for (i = 0; i < this.length; i++) {
+        chr   = this.charCodeAt(i);
+        hash  = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+      }
+      return hash;
+    };
+  </script>
+
+</body>
+</html>
